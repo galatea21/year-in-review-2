@@ -11,12 +11,15 @@
 		"react-scripts": "^5.0.1"
 	},
 	"devDependencies": {
-		"@babel/runtime": "7.13.8"
+		"@babel/runtime": "7.13.8",
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^13.4.0",
+		"cross-env": "^7.0.3"
 	},
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test --env=jsdom",
+		"test": "react-scripts test --env=test --verbose --runInBand",
 		"eject": "react-scripts eject"
 	},
 	"browserslist": [

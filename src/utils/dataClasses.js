@@ -71,6 +71,7 @@ class YearData {
 		for (let i = 0; i < yearData.length; i++) {
 			if (yearData[i]["state"] != "Working") continue;
 			if (i == yearData.length - 1) {
+				// TODO
 			} else {
 				let startTime = yearData[i]["startTime"];
 				let endTime = yearData[i + 1]["startTime"];
