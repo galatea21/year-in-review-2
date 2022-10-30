@@ -2,7 +2,7 @@ import "./styles.css";
 import React from "react";
 // import Gauge from "./charts/gauge";
 import BubbleHeatMap from "./charts/bubbleHeatMap";
-// import YearData from "./utils/dataClasses";
+import YearData from "./utils/dataClasses";
 import Pie1 from "./charts/pie1";
 import Pie2 from "./charts/pie2";
 // import Pie3 from "./charts/chart3";
@@ -10,15 +10,13 @@ import Pie2 from "./charts/pie2";
 // import Piecompare from "./charts/piecompare";
 // import Column from "./charts/column";
 
-import {
-	processData,
-	processedData2021,
-	processedData2022,
-} from "./utils/dataHandlers";
-
 function App() {
-	// processData();
-	// const x = new YearData(processedData2021, processedData2022);
+	let a = new YearData("states2021_filtered");
+	// console.table(a.data);
+	// console.log(a.data.length);
+
+	console.log(a.getTotalRuntime());
+
 	return (
 		<div className="flex-container">
 			<div className="pie-container">
