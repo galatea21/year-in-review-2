@@ -3,7 +3,7 @@ import React, { useRef, useLayoutEffect } from "react";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-
+import YearData from "../utils/dataClasses";
 am4core.useTheme(am4themes_animated);
 
 function Pie1(props) {
@@ -13,25 +13,26 @@ function Pie1(props) {
 
 	useLayoutEffect(() => {
 		let chart = am4core.create(chartID, am4charts.PieChart);
-
 		chart.paddingRight = 20;
 
+		let a = new YearData("states2021_filtered");
+		// chart.dataSource.url = a.getRuntimeByQuarter(1);
 		chart.data = [
 			{
 				period: "Q1",
-				workingHours: 501.9,
+				workingHours: a.getRuntimeByQuarter(1),
 			},
 			{
 				period: "Q2",
-				workingHours: 301.9,
+				workingHours: a.getRuntimeByQuarter(2),
 			},
 			{
 				period: "Q3",
-				workingHours: 201.1,
+				workingHours: a.getRuntimeByQuarter(3),
 			},
 			{
 				period: "Q4",
-				workingHours: 50.8,
+				workingHours: a.getRuntimeByQuarter(4),
 			},
 		];
 

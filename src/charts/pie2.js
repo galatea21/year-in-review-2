@@ -3,7 +3,7 @@ import React, { useRef, useLayoutEffect } from "react";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-
+import YearData from "../utils/dataClasses";
 am4core.useTheme(am4themes_animated);
 
 function Pie2(props) {
@@ -15,23 +15,24 @@ function Pie2(props) {
 		let chart = am4core.create(chartID, am4charts.PieChart);
 
 		chart.paddingRight = 20;
+		let b = new YearData("states2022_filtered");
 
 		chart.data = [
 			{
 				period: "Q1",
-				percentage: 501.9,
+				percentage: b.getRuntimeByQuarter(1),
 			},
 			{
 				period: "Q2",
-				percentage: 301.9,
+				percentage: b.getRuntimeByQuarter(2),
 			},
 			{
 				period: "Q3",
-				percentage: 201.1,
+				percentage: b.getRuntimeByQuarter(3),
 			},
 			{
 				period: "Q4",
-				percentage: 165.8,
+				percentage: b.getRuntimeByQuarter(4),
 			},
 		];
 

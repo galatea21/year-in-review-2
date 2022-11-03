@@ -25,8 +25,8 @@ class HourData {
 		this.startTime = startTime.toString();
 		this.hour = startTime.getHours();
 		this.weekday = startTime.getDay();
-		this.month = startTime.getMonth();
-		this.quarter = Math.floor(this.month / 4);
+		this.month = startTime.getMonth() + 1;
+		this.quarter = Math.ceil(this.month / 3);
 		this.workingPercent = workingTime / 60;
 	}
 }

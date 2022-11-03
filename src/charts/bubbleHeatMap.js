@@ -66,7 +66,7 @@ function BubbleHeatMap(props) {
 
 		chart.data = [
 			{
-				hour: "12pm",
+				hour: "12am",
 				weekday: "Sun",
 				value: 2990,
 			},
@@ -126,7 +126,7 @@ function BubbleHeatMap(props) {
 				value: 3018,
 			},
 			{
-				hour: "12am",
+				hour: "12pm",
 				weekday: "Sun",
 				value: 3154,
 			},
@@ -186,7 +186,7 @@ function BubbleHeatMap(props) {
 				value: 3323,
 			},
 			{
-				hour: "12pm",
+				hour: "12am",
 				weekday: "Mon",
 				value: 3346,
 			},
@@ -246,7 +246,7 @@ function BubbleHeatMap(props) {
 				value: 9313,
 			},
 			{
-				hour: "12am",
+				hour: "12pm",
 				weekday: "Mon",
 				value: 9011,
 			},
@@ -306,7 +306,7 @@ function BubbleHeatMap(props) {
 				value: 4851,
 			},
 			{
-				hour: "12pm",
+				hour: "12am",
 				weekday: "Tue",
 				value: 4468,
 			},
@@ -366,7 +366,7 @@ function BubbleHeatMap(props) {
 				value: 10425,
 			},
 			{
-				hour: "12am",
+				hour: "12pm",
 				weekday: "Tue",
 				value: 10137,
 			},
@@ -426,7 +426,7 @@ function BubbleHeatMap(props) {
 				value: 8581,
 			},
 			{
-				hour: "12pm",
+				hour: "12am",
 				weekday: "Wed",
 				value: 8145,
 			},
@@ -486,7 +486,7 @@ function BubbleHeatMap(props) {
 				value: 9928,
 			},
 			{
-				hour: "12am",
+				hour: "12pm",
 				weekday: "Wed",
 				value: 9644,
 			},
@@ -546,7 +546,7 @@ function BubbleHeatMap(props) {
 				value: 4118,
 			},
 			{
-				hour: "12pm",
+				hour: "12am",
 				weekday: "Thu",
 				value: 3689,
 			},
@@ -606,7 +606,7 @@ function BubbleHeatMap(props) {
 				value: 9420,
 			},
 			{
-				hour: "12am",
+				hour: "12pm",
 				weekday: "Thu",
 				value: 8966,
 			},
@@ -666,7 +666,7 @@ function BubbleHeatMap(props) {
 				value: 4017,
 			},
 			{
-				hour: "12pm",
+				hour: "12am",
 				weekday: "Fri",
 				value: 4022,
 			},
@@ -726,7 +726,7 @@ function BubbleHeatMap(props) {
 				value: 8615,
 			},
 			{
-				hour: "12am",
+				hour: "12pm",
 				weekday: "Fri",
 				value: 8218,
 			},
@@ -786,7 +786,7 @@ function BubbleHeatMap(props) {
 				value: 3833,
 			},
 			{
-				hour: "12pm",
+				hour: "12am",
 				weekday: "Sat",
 				value: 3503,
 			},
@@ -846,7 +846,7 @@ function BubbleHeatMap(props) {
 				value: 3416,
 			},
 			{
-				hour: "12am",
+				hour: "12pm",
 				weekday: "Sat",
 				value: 3432,
 			},
