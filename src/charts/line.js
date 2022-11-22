@@ -10,15 +10,13 @@ function LineChart() {
 		am4core.useTheme(am4themes_animated);
 		am4core.useTheme(am4themes_amchartsdark);
 
-		var piechart,
+		var radarChart,
 			lineSeries,
 			lineChart,
 			valueAxis,
-			pieSeries,
+			radarSeries,
 			mainContainer,
-			headerLabel,
-			footerLabel,
-			nextButton;
+			headerLabel;
 
 		setTimeout(init, 500);
 
@@ -55,41 +53,14 @@ function LineChart() {
 			triangle2.align = "center";
 			triangle2.dx = 1;
 
-			nextButton = mainContainer.createChild(am4core.Button);
-			nextButton.horizontalCenter = "middle";
-			nextButton.verticalCenter = "middle";
-			nextButton.padding(0, 0, 0, 0);
-			nextButton.background.cornerRadius(25, 25, 25, 25);
-			nextButton.y = headerLabel.y;
-			nextButton.dy = 1;
-			nextButton.height = 40;
-			nextButton.width = 40;
-			nextButton.horizontalCenter = "middle";
-			nextButton.verticalCenter = "middle";
-			nextButton.zIndex = 5000;
-			nextButton.icon = triangle2;
-			nextButton.hide(0);
-			// nextButton.events.on("hit", repeat);
-
-			footerLabel = mainContainer.createChild(am4core.Label);
-			footerLabel.x = am4core.percent(50);
-			footerLabel.y = am4core.percent(90);
-			footerLabel.fontSize = 16;
-			footerLabel.fill = am4core.color("#ffffff");
-			footerLabel.verticalCenter = "middle";
-			footerLabel.horizontalCenter = "middle";
-			footerLabel.fillOpacity = 0.5;
-			footerLabel.fontSize = 12;
-			footerLabel.hide(0);
-
 			// area chart on initial screen (the one which bends around pie chart)
 			lineChart = mainContainer.createChild(am4charts.XYChart);
 			lineChart.padding(0, 0, 0, 0);
 
 			var data = [];
-			var date = new Date(2000, 0, 1, 0, 0, 0, 0);
+			var date = new Date();
 
-			for (var i = 0; i < 7; i++) {
+			for (var i = 0; i < 5; i++) {
 				var newDate = new Date(date.getTime());
 				newDate.setDate(i + 1);
 				data.push({ date: newDate, value: 32 });
@@ -149,72 +120,129 @@ function LineChart() {
 
 		// where pie chart is created and animated from bottom to top, also where area's chart values are animated to bend around pie.
 		function stage0() {
-			if (!piechart) {
-				piechart = mainContainer.createChild(am4charts.PieChart);
-				piechart.zindex = 15;
-				piechart.hiddenState.properties.opacity = 0; // this makes initial fade in effect
-				piechart.width = 400;
-				piechart.x = am4core.percent(50);
-				piechart.horizontalCenter = "middle";
-				piechart.hiddenState.properties.opacity = 0;
-				piechart.defaultState.transitionDuration = 3500;
-				piechart.defaultState.transitionEasing =
-					am4core.ease.elasticOut;
+			radarChart = mainContainer.createChild(am4charts.RadarChart);
 
-				piechart.data = [
-					{
-						answer: "[bold]No[/b]",
-						value: 400,
-						fontColor: am4core.color("#222a3f"),
-					},
-					{ answer: "It's impossible!", value: 200, radius: 10 },
-					{
-						answer: "What does bend mean?",
-						value: 40,
-						disabled: true,
-					},
-					{
-						answer: "Yes, I use amCharts 4",
-						value: 30,
-						disabled: true,
-					},
-				];
+			radarChart.data = [
+				{
+					category: "So",
+					value: 10,
+				},
+				{
+					category: "can",
+					value: 20,
+				},
+				{
+					category: "your",
+					value: 30,
+				},
+				{
+					category: "charts",
+					value: 40,
+				},
+				{
+					category: "do",
+					value: 50,
+				},
+				{
+					category: "this?",
+					value: 60,
+				},
+			];
 
-				pieSeries = piechart.series.push(new am4charts.PieSeries());
-				pieSeries.dataFields.value = "value";
-				pieSeries.dataFields.category = "answer";
-				piechart.innerRadius = 75;
-				piechart.radius = 150;
-				// this makes initial animation
-				pieSeries.hiddenState.properties.opacity = 0;
-				pieSeries.slices.template.cornerRadius = 7;
-				pieSeries.defaultState.transitionDuration = 2000;
-				pieSeries.hiddenState.transitionEasing = am4core.ease.sinOut;
-				pieSeries.labels.template.fillOpacity = 0.8;
-				pieSeries.labels.template.text = "{category}";
-				pieSeries.alignLabels = false;
-				pieSeries.labels.template.radius = -53;
-				pieSeries.labels.template.propertyFields.disabled = "disabled";
-				pieSeries.labels.template.propertyFields.fill = "fontColor";
-				pieSeries.labels.template.propertyFields.radius = "radius";
-				pieSeries.ticks.template.disabled = true;
-				//this makes initial animation from bottom
-				pieSeries.hiddenState.properties.dy = 400;
-				pieSeries.defaultState.transitionEasing =
-					am4core.ease.elasticOut;
-				pieSeries.defaultState.transitionDuration = 3500;
+			radarChart.padding(10, 10, 10, 10);
+			radarChart.zIndex = 40;
+			radarChart.radius = am4core.percent(100);
+			radarChart.zoomOutButton.disabled = true;
+			radarChart.width = 400;
+			radarChart.x = am4core.percent(50);
+			radarChart.y = am4core.percent(50);
+			radarChart.horizontalCenter = "middle";
+			radarChart.verticalCenter = "middle";
+
+			radarChart.startAngle = 90;
+			radarChart.endAngle = 450;
+
+			radarChart.innerRadius = am4core.percent(40);
+
+			var categoryAxis = radarChart.xAxes.push(
+				new am4charts.CategoryAxis()
+			);
+			categoryAxis.dataFields.category = "category";
+			categoryAxis.renderer.minGridDistance = 10;
+			categoryAxis.renderer.grid.template.location = 0;
+			categoryAxis.renderer.labels.template.disabled = true;
+
+			var valueAxis = radarChart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.renderer.minGridDistance = 10;
+			valueAxis.renderer.grid.template.strokeOpacity = 0.05;
+			valueAxis.renderer.labels.template.disabled = true;
+			valueAxis.renderer.axisAngle = radarChart.startAngle;
+			valueAxis.min = 0;
+			valueAxis.max = 70;
+			valueAxis.strictMinMax = true;
+
+			radarSeries = radarChart.series.push(
+				new am4charts.RadarColumnSeries()
+			);
+			radarSeries.columns.template.width = am4core.percent(80);
+			radarSeries.dataFields.categoryX = "category";
+			radarSeries.columns.template.tooltipText = "{categoryX}";
+			radarSeries.dataFields.valueY = "value";
+			radarSeries.columns.template.radarColumn.cornerRadius = 4;
+			radarSeries.columns.template.radarColumn.innerCornerRadius = 0;
+			radarSeries.columns.template.strokeOpacity = 0;
+			radarSeries.defaultState.transitionDuration = 500;
+			radarSeries.sequencedInterpolation = true;
+
+			radarSeries.columns.template.adapter.add(
+				"fill",
+				function (fill, target) {
+					if (target.dataItem) {
+						return radarChart.colors.getIndex(
+							5 - target.dataItem.index
+						);
+					}
+				}
+			);
+
+			radarChart.events.on("ready", unbend);
+
+			function bend() {
+				var animation = radarChart
+					.animate(
+						[
+							{ property: "startAngle", to: 90 },
+							{ property: "endAngle", to: 450 },
+						],
+						3500,
+						am4core.ease.cubicIn
+					)
+					.delay(1000);
+				animation.events.on("animationended", unbend);
 			}
 
-			headerLabel.y = 70;
-			piechart.hide(0);
-			piechart.show();
-			pieSeries.hide(0);
-			var animation = pieSeries.show();
-			// animation.events.on("animationended", createMap);
+			function unbend() {
+				var animation = radarChart
+					.animate(
+						[
+							{ property: "startAngle", to: 269.9 },
+							{ property: "endAngle", to: 270.1 },
+						],
+						3500,
+						am4core.ease.cubicIn
+					)
+					.delay(500);
+				// animation.events.on("animationended", bend);
+			}
+
+			radarChart.hide(0);
+			radarChart.show();
+			radarSeries.hide(0);
+			// var animation = pieSeries.show();
 			// change duration and easing
 			lineSeries.interpolationDuration = 3000;
 			lineSeries.interpolationEasing = am4core.ease.elasticOut;
-			lineSeries.dataItems.getIndex(3).setValue("valueY", 80, 3500);
+			lineSeries.dataItems.getIndex(2).setValue("valueY", 80, 3500);
 		}
 	});
 
