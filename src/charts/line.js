@@ -127,45 +127,26 @@ function LineChart() {
 
 			radarChart.data = [
 				{
-					category: a.getRuntimeByQuarter(1),
+					category:a.getRuntimeByQuarter(1),
 					value: a.getRuntimeByQuarter(1),
+					quarter: "Q1"
 				},
 				{
-					category:a.getRuntimeByQuarter(2),
+					category: a.getRuntimeByQuarter(2),
 					value: a.getRuntimeByQuarter(2),
+					quarter: "Q2"
 				},
 				{
 					category: a.getRuntimeByQuarter(3),
 					value: a.getRuntimeByQuarter(3),
+					quarter: "Q3"
 				},
 				{
 					category: a.getRuntimeByQuarter(4),
 					value: a.getRuntimeByQuarter(4),
+					quarter: "Q4"
 				}
-				// {
-				// 	category: "So",
-				// 	value: 10,
-				// },
-				// {
-				// 	category: "can",
-				// 	value: 20,
-				// },
-				// {
-				// 	category: "your",
-				// 	value: 30,
-				// },
-				// {
-				// 	category: "charts",
-				// 	value: 40,
-				// },
-				// {
-				// 	category: "do",
-				// 	value: 50,
-				// },
-				// {
-				// 	category: "this?",
-				// 	value: 60,
-				// },
+				
 			];
 
 			radarChart.padding(10, 10, 10, 10);
@@ -207,13 +188,18 @@ function LineChart() {
 			);
 			radarSeries.columns.template.width = am4core.percent(80);
 			radarSeries.dataFields.categoryX = "category";
-			radarSeries.columns.template.tooltipText = "{value}";
 			radarSeries.dataFields.valueY = "value";
 			radarSeries.columns.template.radarColumn.cornerRadius = 4;
 			radarSeries.columns.template.radarColumn.innerCornerRadius = 0;
+			radarSeries.tooltipText = "{valueY.value}";
 			radarSeries.columns.template.strokeOpacity = 0;
 			radarSeries.defaultState.transitionDuration = 500;
 			radarSeries.sequencedInterpolation = true;
+
+			let labelBullet = radarSeries.bullets.push(new am4charts.LabelBullet());
+			labelBullet.label.verticalCenter = "bottom";
+			labelBullet.label.dy = 5;
+			labelBullet.label.text = "{quarter}";
 
 			radarSeries.columns.template.adapter.add(
 				"fill",
@@ -228,20 +214,6 @@ function LineChart() {
 
 			radarChart.events.on("ready", unbend);
 
-			function bend() {
-				var animation = radarChart
-					.animate(
-						[
-							{ property: "startAngle", to: 90 },
-							{ property: "endAngle", to: 450 },
-						],
-						3500,
-						am4core.ease.cubicIn
-					)
-					.delay(1000);
-				animation.events.on("animationended", unbend);
-			}
-
 			function unbend() {
 				var animation = radarChart
 					.animate(
@@ -253,9 +225,23 @@ function LineChart() {
 						am4core.ease.cubicIn
 					)
 					.delay(500);
-				// animation.events.on("animationended", bend);
+				animation.events.on("animationended", bend);
 			}
 
+			// function bend() {
+			// 	var animation = radarChart
+			// 		.animate(
+			// 			[
+			// 				{ property: "startAngle", to: 90 },
+			// 				{ property: "endAngle", to: 450 },
+			// 			],
+			// 			3500,
+			// 			am4core.ease.cubicOut
+			// 		)
+			// 		.delay(1000);
+			// 	// animation.events.on("animationended", unbend);
+			// }
+			
 			radarChart.hide(0);
 			radarChart.show();
 			radarSeries.hide(0);
