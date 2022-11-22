@@ -1,4 +1,5 @@
 import "../styles.css";
+import YearData from "../utils/dataClasses";
 import React, { useEffect } from "react";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -122,31 +123,49 @@ function LineChart() {
 		function stage0() {
 			radarChart = mainContainer.createChild(am4charts.RadarChart);
 
+			let a = new YearData("states2021_filtered");
+
 			radarChart.data = [
 				{
-					category: "So",
-					value: 10,
+					category: a.getRuntimeByQuarter(1),
+					value: a.getRuntimeByQuarter(1),
 				},
 				{
-					category: "can",
-					value: 20,
+					category:a.getRuntimeByQuarter(2),
+					value: a.getRuntimeByQuarter(2),
 				},
 				{
-					category: "your",
-					value: 30,
+					category: a.getRuntimeByQuarter(3),
+					value: a.getRuntimeByQuarter(3),
 				},
 				{
-					category: "charts",
-					value: 40,
-				},
-				{
-					category: "do",
-					value: 50,
-				},
-				{
-					category: "this?",
-					value: 60,
-				},
+					category: a.getRuntimeByQuarter(4),
+					value: a.getRuntimeByQuarter(4),
+				}
+				// {
+				// 	category: "So",
+				// 	value: 10,
+				// },
+				// {
+				// 	category: "can",
+				// 	value: 20,
+				// },
+				// {
+				// 	category: "your",
+				// 	value: 30,
+				// },
+				// {
+				// 	category: "charts",
+				// 	value: 40,
+				// },
+				// {
+				// 	category: "do",
+				// 	value: 50,
+				// },
+				// {
+				// 	category: "this?",
+				// 	value: 60,
+				// },
 			];
 
 			radarChart.padding(10, 10, 10, 10);
@@ -154,6 +173,7 @@ function LineChart() {
 			radarChart.radius = am4core.percent(100);
 			radarChart.zoomOutButton.disabled = true;
 			radarChart.width = 400;
+			radarChart.height = 300;
 			radarChart.x = am4core.percent(50);
 			radarChart.y = am4core.percent(50);
 			radarChart.horizontalCenter = "middle";
@@ -170,15 +190,16 @@ function LineChart() {
 			categoryAxis.dataFields.category = "category";
 			categoryAxis.renderer.minGridDistance = 10;
 			categoryAxis.renderer.grid.template.location = 0;
-			categoryAxis.renderer.labels.template.disabled = true;
+			categoryAxis.renderer.labels.template.location = 0.5;
+			// categoryAxis.renderer.labels.template.disabled = true;
 
 			var valueAxis = radarChart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.minGridDistance = 10;
-			valueAxis.renderer.grid.template.strokeOpacity = 0.05;
+			valueAxis.renderer.grid.template.strokeOpacity = 0;
 			valueAxis.renderer.labels.template.disabled = true;
 			valueAxis.renderer.axisAngle = radarChart.startAngle;
 			valueAxis.min = 0;
-			valueAxis.max = 70;
+			valueAxis.max = 500000;
 			valueAxis.strictMinMax = true;
 
 			radarSeries = radarChart.series.push(
@@ -186,7 +207,7 @@ function LineChart() {
 			);
 			radarSeries.columns.template.width = am4core.percent(80);
 			radarSeries.dataFields.categoryX = "category";
-			radarSeries.columns.template.tooltipText = "{categoryX}";
+			radarSeries.columns.template.tooltipText = "{value}";
 			radarSeries.dataFields.valueY = "value";
 			radarSeries.columns.template.radarColumn.cornerRadius = 4;
 			radarSeries.columns.template.radarColumn.innerCornerRadius = 0;
