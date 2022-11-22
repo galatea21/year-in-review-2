@@ -16,7 +16,7 @@ function Pie1(props) {
 		chart.paddingRight = 20;
 
 		let a = new YearData("states2021_filtered");
-		// chart.dataSource.url = a.getRuntimeByQuarter(1);
+
 		chart.data = [
 			{
 				period: "Q1",
