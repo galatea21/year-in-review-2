@@ -129,18 +129,22 @@ function LineChart() {
 				{
 					category: a.getRuntimeByQuarter(1),
 					value: a.getRuntimeByQuarter(1),
+					quarter: "Q1",
 				},
 				{
 					category: a.getRuntimeByQuarter(2),
 					value: a.getRuntimeByQuarter(2),
+					quarter: "Q2",
 				},
 				{
 					category: a.getRuntimeByQuarter(3),
 					value: a.getRuntimeByQuarter(3),
+					quarter: "Q3",
 				},
 				{
 					category: a.getRuntimeByQuarter(4),
 					value: a.getRuntimeByQuarter(4),
+					quarter: "Q4",
 				},
 			];
 
@@ -183,13 +187,20 @@ function LineChart() {
 			);
 			radarSeries.columns.template.width = am4core.percent(80);
 			radarSeries.dataFields.categoryX = "category";
-			radarSeries.columns.template.tooltipText = "{value}";
 			radarSeries.dataFields.valueY = "value";
 			radarSeries.columns.template.radarColumn.cornerRadius = 4;
 			radarSeries.columns.template.radarColumn.innerCornerRadius = 0;
+			radarSeries.tooltipText = "{valueY.value}";
 			radarSeries.columns.template.strokeOpacity = 0;
 			radarSeries.defaultState.transitionDuration = 500;
 			radarSeries.sequencedInterpolation = true;
+
+			let labelBullet = radarSeries.bullets.push(
+				new am4charts.LabelBullet()
+			);
+			labelBullet.label.verticalCenter = "bottom";
+			labelBullet.label.dy = 5;
+			labelBullet.label.text = "{quarter}";
 
 			radarSeries.columns.template.adapter.add(
 				"fill",
