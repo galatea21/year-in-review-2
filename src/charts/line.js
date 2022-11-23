@@ -11,6 +11,8 @@ function LineChart() {
 		am4core.useTheme(am4themes_animated);
 		am4core.useTheme(am4themes_amchartsdark);
 
+		let a = new YearData("states2021_filtered");
+
 		var radarChart,
 			lineSeries,
 			lineChart,
@@ -123,15 +125,13 @@ function LineChart() {
 		function stage0() {
 			radarChart = mainContainer.createChild(am4charts.RadarChart);
 
-			let a = new YearData("states2021_filtered");
-
 			radarChart.data = [
 				{
 					category: a.getRuntimeByQuarter(1),
 					value: a.getRuntimeByQuarter(1),
 				},
 				{
-					category:a.getRuntimeByQuarter(2),
+					category: a.getRuntimeByQuarter(2),
 					value: a.getRuntimeByQuarter(2),
 				},
 				{
@@ -141,31 +141,7 @@ function LineChart() {
 				{
 					category: a.getRuntimeByQuarter(4),
 					value: a.getRuntimeByQuarter(4),
-				}
-				// {
-				// 	category: "So",
-				// 	value: 10,
-				// },
-				// {
-				// 	category: "can",
-				// 	value: 20,
-				// },
-				// {
-				// 	category: "your",
-				// 	value: 30,
-				// },
-				// {
-				// 	category: "charts",
-				// 	value: 40,
-				// },
-				// {
-				// 	category: "do",
-				// 	value: 50,
-				// },
-				// {
-				// 	category: "this?",
-				// 	value: 60,
-				// },
+				},
 			];
 
 			radarChart.padding(10, 10, 10, 10);
@@ -220,27 +196,13 @@ function LineChart() {
 				function (fill, target) {
 					if (target.dataItem) {
 						return radarChart.colors.getIndex(
-							5 - target.dataItem.index
+							12 - target.dataItem.index
 						);
 					}
 				}
 			);
 
 			radarChart.events.on("ready", unbend);
-
-			function bend() {
-				var animation = radarChart
-					.animate(
-						[
-							{ property: "startAngle", to: 90 },
-							{ property: "endAngle", to: 450 },
-						],
-						3500,
-						am4core.ease.cubicIn
-					)
-					.delay(1000);
-				animation.events.on("animationended", unbend);
-			}
 
 			function unbend() {
 				var animation = radarChart
@@ -249,21 +211,180 @@ function LineChart() {
 							{ property: "startAngle", to: 269.9 },
 							{ property: "endAngle", to: 270.1 },
 						],
-						3500,
+						1500,
 						am4core.ease.cubicIn
 					)
-					.delay(500);
-				// animation.events.on("animationended", bend);
+					.delay(5000);
+				animation.events.on("animationended", stage1);
 			}
 
 			radarChart.hide(0);
 			radarChart.show();
 			radarSeries.hide(0);
-			// var animation = pieSeries.show();
 			// change duration and easing
 			lineSeries.interpolationDuration = 3000;
 			lineSeries.interpolationEasing = am4core.ease.elasticOut;
 			lineSeries.dataItems.getIndex(2).setValue("valueY", 80, 3500);
+		}
+
+		function stage1() {
+			lineSeries.dataItems.getIndex(0).setValue("valueY", 100, 3500);
+			lineSeries.dataItems.getIndex(1).setValue("valueY", 100, 3500);
+			lineSeries.dataItems.getIndex(2).setValue("valueY", 100, 3500);
+			lineSeries.dataItems.getIndex(3).setValue("valueY", 100, 3500);
+			lineSeries.dataItems.getIndex(4).setValue("valueY", 100, 3500);
+
+			radarChart.data = [
+				{
+					category: a.getRuntimeByMonth(1),
+					value: a.getRuntimeByMonth(1),
+				},
+				{
+					category: a.getRuntimeByMonth(2),
+					value: a.getRuntimeByMonth(2),
+				},
+				{
+					category: a.getRuntimeByMonth(3),
+					value: a.getRuntimeByMonth(3),
+				},
+				{
+					category: a.getRuntimeByMonth(4),
+					value: a.getRuntimeByMonth(4),
+				},
+				{
+					category: a.getRuntimeByMonth(5),
+					value: a.getRuntimeByMonth(5),
+				},
+				{
+					category: a.getRuntimeByMonth(6),
+					value: a.getRuntimeByMonth(6),
+				},
+				{
+					category: a.getRuntimeByMonth(7),
+					value: a.getRuntimeByMonth(7),
+				},
+				{
+					category: a.getRuntimeByMonth(8),
+					value: a.getRuntimeByMonth(8),
+				},
+				{
+					category: a.getRuntimeByMonth(9),
+					value: a.getRuntimeByMonth(9),
+				},
+				{
+					category: a.getRuntimeByMonth(10),
+					value: a.getRuntimeByMonth(10),
+				},
+				{
+					category: a.getRuntimeByMonth(11),
+					value: a.getRuntimeByMonth(11),
+				},
+				{
+					category: a.getRuntimeByMonth(12),
+					value: a.getRuntimeByMonth(12),
+				},
+			];
+
+			var valueAxis = radarChart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.max = 300000;
+
+			radarChart
+				.animate(
+					[
+						{ property: "width", to: 1200 },
+						{
+							property: "data",
+							to: [
+								{
+									category: a.getRuntimeByMonth(1),
+									value: a.getRuntimeByMonth(1),
+								},
+								{
+									category: a.getRuntimeByMonth(2),
+									value: a.getRuntimeByMonth(2),
+								},
+								{
+									category: a.getRuntimeByMonth(3),
+									value: a.getRuntimeByMonth(3),
+								},
+								{
+									category: a.getRuntimeByMonth(4),
+									value: a.getRuntimeByMonth(4),
+								},
+								{
+									category: a.getRuntimeByMonth(5),
+									value: a.getRuntimeByMonth(5),
+								},
+								{
+									category: a.getRuntimeByMonth(6),
+									value: a.getRuntimeByMonth(6),
+								},
+								{
+									category: a.getRuntimeByMonth(7),
+									value: a.getRuntimeByMonth(7),
+								},
+								{
+									category: a.getRuntimeByMonth(8),
+									value: a.getRuntimeByMonth(8),
+								},
+								{
+									category: a.getRuntimeByMonth(9),
+									value: a.getRuntimeByMonth(9),
+								},
+								{
+									category: a.getRuntimeByMonth(10),
+									value: a.getRuntimeByMonth(10),
+								},
+								{
+									category: a.getRuntimeByMonth(11),
+									value: a.getRuntimeByMonth(11),
+								},
+								{
+									category: a.getRuntimeByMonth(12),
+									value: a.getRuntimeByMonth(12),
+								},
+							],
+						},
+					],
+					500,
+					am4core.ease.linear
+				)
+				.delay(100);
+			// animation.events.on("animationended", stage2);
+		}
+
+		function stage2() {
+			radarChart.width = 700;
+			radarChart.data = [
+				{
+					category: a.getRuntimeByWeekday(0),
+					value: a.getRuntimeByWeekday(0),
+				},
+				{
+					category: a.getRuntimeByWeekday(1),
+					value: a.getRuntimeByWeekday(1),
+				},
+				{
+					category: a.getRuntimeByWeekday(2),
+					value: a.getRuntimeByWeekday(2),
+				},
+				{
+					category: a.getRuntimeByWeekday(3),
+					value: a.getRuntimeByWeekday(3),
+				},
+				{
+					category: a.getRuntimeByWeekday(4),
+					value: a.getRuntimeByWeekday(4),
+				},
+				{
+					category: a.getRuntimeByWeekday(5),
+					value: a.getRuntimeByWeekday(5),
+				},
+				{
+					category: a.getRuntimeByWeekday(6),
+					value: a.getRuntimeByWeekday(6),
+				},
+			];
 		}
 	});
 
