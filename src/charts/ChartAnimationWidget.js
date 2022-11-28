@@ -6,35 +6,33 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_amchartsdark from "@amcharts/amcharts4/themes/dark";
 
-function LineChart() {
+function ChartAnimationWidget() {
 	useEffect(() => {
 		am4core.useTheme(am4themes_animated);
 		am4core.useTheme(am4themes_amchartsdark);
 
-		let a = new YearData("states2021_filtered");
+		let dataClass = new YearData("states2021_filtered");
 
-		var radarChart,
+		let radarChart,
 			lineSeries,
 			lineChart,
-			valueAxis,
 			radarSeries,
 			mainContainer,
 			headerLabel;
 
-		setTimeout(init, 500);
+		// Start setting up main container and the chart for background
+		setTimeout(initCharts, 500);
 
-		function init() {
-			// Main container of everything
+		function initCharts() {
+			// Main container of every charts
 			mainContainer = am4core.create(" intro-chart", am4core.Container);
 			mainContainer.width = am4core.percent(100);
 			mainContainer.height = am4core.percent(100);
 			mainContainer.preloader.disabled = true;
 
-			// header label
+			// Customize header label
 			headerLabel = mainContainer.createChild(am4core.TextLink);
 			headerLabel.fill = am4core.color("#ffffff");
-
-			// when we hit title, we repeat animation
 
 			headerLabel.fontSize = 20;
 			headerLabel.horizontalCenter = "middle";
@@ -47,31 +45,23 @@ function LineChart() {
 			headerLabel.hiddenState.transitionDuration = 700;
 			headerLabel.defaultState.transitionDuration = 800;
 
-			var triangle2 = new am4core.Triangle();
-			triangle2.width = 8;
-			triangle2.height = 10;
-			triangle2.fill = am4core.color("#ffffff");
-			triangle2.direction = "right";
-			triangle2.valign = "middle";
-			triangle2.align = "center";
-			triangle2.dx = 1;
-
-			// area chart on initial screen (the one which bends around pie chart)
+			// Area chart on initial screen (the one which bends around quarter chart)
 			lineChart = mainContainer.createChild(am4charts.XYChart);
 			lineChart.padding(0, 0, 0, 0);
 
-			var data = [];
-			var date = new Date();
+			// Make line chart only a straight line and hide axises
+			let data = [];
+			let date = new Date();
 
-			for (var i = 0; i < 5; i++) {
-				var newDate = new Date(date.getTime());
+			for (let i = 0; i < 5; i++) {
+				let newDate = new Date(date.getTime());
 				newDate.setDate(i + 1);
 				data.push({ date: newDate, value: 32 });
 			}
 
 			lineChart.data = data;
 
-			var dateAxis = lineChart.xAxes.push(new am4charts.DateAxis());
+			let dateAxis = lineChart.xAxes.push(new am4charts.DateAxis());
 			dateAxis.renderer.grid.template.location = 0;
 			dateAxis.renderer.labels.template.disabled = true;
 			dateAxis.renderer.inside = true;
@@ -81,7 +71,7 @@ function LineChart() {
 			dateAxis.renderer.baseGrid.disabled = true;
 			dateAxis.renderer.line.disabled = true;
 
-			valueAxis = lineChart.yAxes.push(new am4charts.ValueAxis());
+			let valueAxis = lineChart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.tooltip.disabled = true;
 			valueAxis.renderer.labels.template.disabled = true;
 			valueAxis.renderer.inside = true;
@@ -101,49 +91,52 @@ function LineChart() {
 			lineSeries.fill = am4core.color("#222a3f");
 			lineSeries.fillOpacity = 1;
 			lineSeries.hidden = true;
-			lineSeries.events.on("inited", startEverything);
+
+			// Start animating
+			lineSeries.events.on("inited", startAnimation);
 		}
 
-		function startEverything() {
+		function startAnimation() {
+			// Show label
 			headerLabel.hide(0);
-			headerLabel.text =
-				"[font-size: 12 opacity: 0.5]amCharts presents the movie: [/]Will it bend?";
+			headerLabel.text = "Year-in Review";
 			headerLabel.interactionsEnabled = false;
 			headerLabel.show();
 
+			// Show the background line chart
 			lineChart.visible = true;
 			lineSeries.defaultState.transitionDuration = 1000;
 			lineSeries.hide(0);
-			var animation = lineSeries.show();
+			let animation = lineSeries.show();
 
 			animation.events.on("animationended", function () {
-				setTimeout(stage0, 500);
+				setTimeout(showQuarterChart, 500);
 			});
 		}
 
-		// where pie chart is created and animated from bottom to top, also where area's chart values are animated to bend around pie.
-		function stage0() {
+		function showQuarterChart() {
+			// Create and set data for the quarter chart as a radar chart
 			radarChart = mainContainer.createChild(am4charts.RadarChart);
 
 			radarChart.data = [
 				{
-					category: a.getRuntimeByQuarter(1),
-					value: a.getRuntimeByQuarter(1),
+					category: dataClass.getRuntimeByQuarter(0),
+					value: dataClass.getRuntimeByQuarter(0),
 					quarter: "Q1",
 				},
 				{
-					category: a.getRuntimeByQuarter(2),
-					value: a.getRuntimeByQuarter(2),
+					category: dataClass.getRuntimeByQuarter(1),
+					value: dataClass.getRuntimeByQuarter(1),
 					quarter: "Q2",
 				},
 				{
-					category: a.getRuntimeByQuarter(3),
-					value: a.getRuntimeByQuarter(3),
+					category: dataClass.getRuntimeByQuarter(2),
+					value: dataClass.getRuntimeByQuarter(2),
 					quarter: "Q3",
 				},
 				{
-					category: a.getRuntimeByQuarter(4),
-					value: a.getRuntimeByQuarter(4),
+					category: dataClass.getRuntimeByQuarter(3),
+					value: dataClass.getRuntimeByQuarter(3),
 					quarter: "Q4",
 				},
 			];
@@ -164,7 +157,7 @@ function LineChart() {
 
 			radarChart.innerRadius = am4core.percent(40);
 
-			var categoryAxis = radarChart.xAxes.push(
+			let categoryAxis = radarChart.xAxes.push(
 				new am4charts.CategoryAxis()
 			);
 			categoryAxis.dataFields.category = "category";
@@ -173,7 +166,7 @@ function LineChart() {
 			categoryAxis.renderer.labels.template.location = 0.5;
 			// categoryAxis.renderer.labels.template.disabled = true;
 
-			var valueAxis = radarChart.yAxes.push(new am4charts.ValueAxis());
+			let valueAxis = radarChart.yAxes.push(new am4charts.ValueAxis());
 			valueAxis.renderer.minGridDistance = 10;
 			valueAxis.renderer.grid.template.strokeOpacity = 0;
 			valueAxis.renderer.labels.template.disabled = true;
@@ -213,10 +206,9 @@ function LineChart() {
 				}
 			);
 
-			radarChart.events.on("ready", unbend);
-
-			function unbend() {
-				var animation = radarChart
+			// Attempt to aniamte the radar chart into a bar chart
+			radarChart.events.on("ready", () => {
+				let animation = radarChart
 					.animate(
 						[
 							{ property: "startAngle", to: 269.9 },
@@ -226,174 +218,126 @@ function LineChart() {
 						am4core.ease.cubicIn
 					)
 					.delay(5000);
-				animation.events.on("animationended", stage1);
-			}
+				animation.events.on("animationended", showMonthlyChart);
+			});
 
-			radarChart.hide(0);
-			radarChart.show();
 			radarSeries.hide(0);
-			// change duration and easing
+
+			// Change duration and easing
+			// Bend bg line chart to wrap around radar chart
 			lineSeries.interpolationDuration = 3000;
 			lineSeries.interpolationEasing = am4core.ease.elasticOut;
 			lineSeries.dataItems.getIndex(2).setValue("valueY", 80, 3500);
 		}
 
-		function stage1() {
+		function showMonthlyChart() {
+			// Set the lower half of bg to cover whole screen
 			lineSeries.dataItems.getIndex(0).setValue("valueY", 100, 3500);
 			lineSeries.dataItems.getIndex(1).setValue("valueY", 100, 3500);
 			lineSeries.dataItems.getIndex(2).setValue("valueY", 100, 3500);
 			lineSeries.dataItems.getIndex(3).setValue("valueY", 100, 3500);
 			lineSeries.dataItems.getIndex(4).setValue("valueY", 100, 3500);
 
+			let valueAxis = radarChart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.max = 300000;
+
 			radarChart.data = [
 				{
-					category: a.getRuntimeByMonth(1),
-					value: a.getRuntimeByMonth(1),
+					category: dataClass.getRuntimeByMonth(0),
+					value: dataClass.getRuntimeByMonth(0),
 				},
 				{
-					category: a.getRuntimeByMonth(2),
-					value: a.getRuntimeByMonth(2),
+					category: dataClass.getRuntimeByMonth(1),
+					value: dataClass.getRuntimeByMonth(1),
 				},
 				{
-					category: a.getRuntimeByMonth(3),
-					value: a.getRuntimeByMonth(3),
+					category: dataClass.getRuntimeByMonth(2),
+					value: dataClass.getRuntimeByMonth(2),
 				},
 				{
-					category: a.getRuntimeByMonth(4),
-					value: a.getRuntimeByMonth(4),
+					category: dataClass.getRuntimeByMonth(3),
+					value: dataClass.getRuntimeByMonth(3),
 				},
 				{
-					category: a.getRuntimeByMonth(5),
-					value: a.getRuntimeByMonth(5),
+					category: dataClass.getRuntimeByMonth(4),
+					value: dataClass.getRuntimeByMonth(4),
 				},
 				{
-					category: a.getRuntimeByMonth(6),
-					value: a.getRuntimeByMonth(6),
+					category: dataClass.getRuntimeByMonth(5),
+					value: dataClass.getRuntimeByMonth(5),
 				},
 				{
-					category: a.getRuntimeByMonth(7),
-					value: a.getRuntimeByMonth(7),
+					category: dataClass.getRuntimeByMonth(6),
+					value: dataClass.getRuntimeByMonth(6),
 				},
 				{
-					category: a.getRuntimeByMonth(8),
-					value: a.getRuntimeByMonth(8),
+					category: dataClass.getRuntimeByMonth(7),
+					value: dataClass.getRuntimeByMonth(7),
 				},
 				{
-					category: a.getRuntimeByMonth(9),
-					value: a.getRuntimeByMonth(9),
+					category: dataClass.getRuntimeByMonth(8),
+					value: dataClass.getRuntimeByMonth(8),
 				},
 				{
-					category: a.getRuntimeByMonth(10),
-					value: a.getRuntimeByMonth(10),
+					category: dataClass.getRuntimeByMonth(9),
+					value: dataClass.getRuntimeByMonth(9),
 				},
 				{
-					category: a.getRuntimeByMonth(11),
-					value: a.getRuntimeByMonth(11),
+					category: dataClass.getRuntimeByMonth(10),
+					value: dataClass.getRuntimeByMonth(10),
 				},
 				{
-					category: a.getRuntimeByMonth(12),
-					value: a.getRuntimeByMonth(12),
+					category: dataClass.getRuntimeByMonth(11),
+					value: dataClass.getRuntimeByMonth(11),
 				},
 			];
 
-			var valueAxis = radarChart.yAxes.push(new am4charts.ValueAxis());
-			valueAxis.max = 300000;
-
 			radarChart
 				.animate(
-					[
-						{ property: "width", to: 1200 },
-						{
-							property: "data",
-							to: [
-								{
-									category: a.getRuntimeByMonth(1),
-									value: a.getRuntimeByMonth(1),
-								},
-								{
-									category: a.getRuntimeByMonth(2),
-									value: a.getRuntimeByMonth(2),
-								},
-								{
-									category: a.getRuntimeByMonth(3),
-									value: a.getRuntimeByMonth(3),
-								},
-								{
-									category: a.getRuntimeByMonth(4),
-									value: a.getRuntimeByMonth(4),
-								},
-								{
-									category: a.getRuntimeByMonth(5),
-									value: a.getRuntimeByMonth(5),
-								},
-								{
-									category: a.getRuntimeByMonth(6),
-									value: a.getRuntimeByMonth(6),
-								},
-								{
-									category: a.getRuntimeByMonth(7),
-									value: a.getRuntimeByMonth(7),
-								},
-								{
-									category: a.getRuntimeByMonth(8),
-									value: a.getRuntimeByMonth(8),
-								},
-								{
-									category: a.getRuntimeByMonth(9),
-									value: a.getRuntimeByMonth(9),
-								},
-								{
-									category: a.getRuntimeByMonth(10),
-									value: a.getRuntimeByMonth(10),
-								},
-								{
-									category: a.getRuntimeByMonth(11),
-									value: a.getRuntimeByMonth(11),
-								},
-								{
-									category: a.getRuntimeByMonth(12),
-									value: a.getRuntimeByMonth(12),
-								},
-							],
-						},
-					],
+					[{ property: "width", to: 1200 }],
 					500,
 					am4core.ease.linear
 				)
 				.delay(100);
-			// animation.events.on("animationended", stage2);
+
+			setTimeout(showWeeklyChart, 5000);
 		}
 
-		function stage2() {
-			radarChart.width = 700;
+		function showWeeklyChart() {
+			radarChart.animate(
+				[{ property: "width", to: 700 }],
+				500,
+				am4core.ease.linear
+			);
+
 			radarChart.data = [
 				{
-					category: a.getRuntimeByWeekday(0),
-					value: a.getRuntimeByWeekday(0),
+					category: dataClass.getRuntimeByWeekday(0),
+					value: dataClass.getRuntimeByWeekday(0),
 				},
 				{
-					category: a.getRuntimeByWeekday(1),
-					value: a.getRuntimeByWeekday(1),
+					category: dataClass.getRuntimeByWeekday(1),
+					value: dataClass.getRuntimeByWeekday(1),
 				},
 				{
-					category: a.getRuntimeByWeekday(2),
-					value: a.getRuntimeByWeekday(2),
+					category: dataClass.getRuntimeByWeekday(2),
+					value: dataClass.getRuntimeByWeekday(2),
 				},
 				{
-					category: a.getRuntimeByWeekday(3),
-					value: a.getRuntimeByWeekday(3),
+					category: dataClass.getRuntimeByWeekday(3),
+					value: dataClass.getRuntimeByWeekday(3),
 				},
 				{
-					category: a.getRuntimeByWeekday(4),
-					value: a.getRuntimeByWeekday(4),
+					category: dataClass.getRuntimeByWeekday(4),
+					value: dataClass.getRuntimeByWeekday(4),
 				},
 				{
-					category: a.getRuntimeByWeekday(5),
-					value: a.getRuntimeByWeekday(5),
+					category: dataClass.getRuntimeByWeekday(5),
+					value: dataClass.getRuntimeByWeekday(5),
 				},
 				{
-					category: a.getRuntimeByWeekday(6),
-					value: a.getRuntimeByWeekday(6),
+					category: dataClass.getRuntimeByWeekday(6),
+					value: dataClass.getRuntimeByWeekday(6),
 				},
 			];
 		}
@@ -406,4 +350,4 @@ function LineChart() {
 	);
 }
 
-export default LineChart;
+export default ChartAnimationWidget;

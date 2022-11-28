@@ -1,3 +1,4 @@
+// Increase current Date object by an amount of hours
 function addHours(numOfHours, date = new Date()) {
 	date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
 
@@ -25,8 +26,8 @@ class HourData {
 		this.startTime = startTime.toString();
 		this.hour = startTime.getHours();
 		this.weekday = startTime.getDay();
-		this.month = startTime.getMonth() + 1;
-		this.quarter = Math.ceil(this.month / 3);
+		this.month = startTime.getMonth();
+		this.quarter = Math.floor(this.month / 3);
 		this.workingPercent = workingTime / 60;
 	}
 }
@@ -79,6 +80,7 @@ class YearData {
 		return total;
 	}
 
+	// 0 is Jan 11 is Dec
 	getRuntimeByMonth(month) {
 		let total = 0;
 		this.data
@@ -88,6 +90,7 @@ class YearData {
 		return total;
 	}
 
+	// 0 is Sunday 6 is Saturday
 	getRuntimeByWeekday(day) {
 		let total = 0;
 		this.data
@@ -106,6 +109,7 @@ class YearData {
 		return total;
 	}
 
+	// 0 is first 3 is last quarter
 	getRuntimeByQuarter(quarter) {
 		let total = 0;
 		this.data
